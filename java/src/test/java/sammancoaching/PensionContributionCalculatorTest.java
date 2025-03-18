@@ -1,11 +1,12 @@
 package sammancoaching;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PensionContributionCalculatorTest {
 
@@ -22,11 +23,6 @@ class PensionContributionCalculatorTest {
         //given
         databaseAccess.saveValue("BASE_CONTRIBUTION_RATE", 0);
     }
-
-    // TEST LIST
-    // [X] - should create a new instance of the PensionContributionCalculator
-    // [X] - should throw an IllegalArgumentException if baseContributionPercentage is below zero
-    // [X] - Should throw an IllegalArgumentException if annualSalary is below zero
 
     @Test
     @DisplayName("should create a new instance of the PensionContributionCalculator")
@@ -46,6 +42,11 @@ class PensionContributionCalculatorTest {
         public static final int EMPLOYEE_ID = 1;
 
         Employee juniorEmployee;
+
+        // TEST LIST
+        // [X] - should create a new instance of the PensionContributionCalculator
+        // [X] - should throw an IllegalArgumentException if baseContributionPercentage is below zero
+        // [X] - Should throw an IllegalArgumentException if annualSalary is below zero
 
         @BeforeEach
         void setUp() {
@@ -84,6 +85,25 @@ class PensionContributionCalculatorTest {
 
         }
 
+    }
+
+    @Nested
+    @DisplayName("Get tenure bonus")
+    class GetTenureBonus {
+
+        @ParameterizedTest
+        @ValueSource(ints = {10, 11})
+        @DisplayName("should get a bonus of 3.5 for 10 years tenure or more")
+        void should_get_a_bonus_of_3_5_for_10_years_tenure_or_more(int tenureYears) {
+
+            //when
+            double tenureBonus = PensionContributionCalculator.getTenureBonus(tenureYears);
+
+            //then
+            assertEquals(3.5,
+                         tenureBonus,
+                         "The tenure bonus should be 3.5 for 10 years tenure or more");
+        }
     }
 
 
