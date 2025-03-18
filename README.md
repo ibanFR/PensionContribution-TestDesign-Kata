@@ -20,3 +20,10 @@ Notes
 -----
 I find it odd that an employee does not have an attribute for their employee id
 there are some warnings on the initial kata code
+
+* What general advice would you give for designing tests to ensure the failure messages are useful for finding bugs?
+- starting your test cases with the word "should" will help you thinking in the expected system behavior
+- add a relevant message to the assertions
+
+* Are there any kinds of bugs your unit tests will not be able to expose?
+- Don't think so :)
