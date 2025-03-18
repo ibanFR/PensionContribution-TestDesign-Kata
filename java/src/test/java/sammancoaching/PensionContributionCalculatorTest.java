@@ -1,9 +1,11 @@
 package sammancoaching;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PensionContributionCalculatorTest {
 
@@ -18,7 +20,9 @@ class PensionContributionCalculatorTest {
     }
 
     // TEST LIST
-    // [] - should create a new instance of the PensionContributionCalculator
+    // [X] - should create a new instance of the PensionContributionCalculator
+    // [X] - should throw an IllegalArgumentException if baseContributionPercentage is below zero
+    // [] - Should throw an IllegalArgumentException if annualSalary is below zero
 
     @Test
     @DisplayName("should create a new instance of the PensionContributionCalculator")
@@ -28,7 +32,41 @@ class PensionContributionCalculatorTest {
         pensionContributionCalculator = new PensionContributionCalculator(databaseAccess);
 
         //then
-        Assertions.assertNotNull(pensionContributionCalculator);
+        assertNotNull(pensionContributionCalculator);
+    }
+
+    @Nested
+    @DisplayName("Calculate pension contribution")
+    class CalculatePensionContribution {
+
+
+        public static final int EMPLOYEE_ID = 1;
+
+        Employee juniorEmployee;
+
+        @BeforeEach
+        void setUp() {
+            juniorEmployee = new Employee(BigDecimal.valueOf(1000), 100_000, new JuniorEmployee());
+            databaseAccess.saveEmployee(EMPLOYEE_ID, juniorEmployee);
+        }
+
+        @Test
+        @DisplayName("should throw an IllegalArgumentException if baseContributionPercentage is below zero")
+        void should_throw_an_IllegalArgumentException_if_baseContributionPercentage_is_below_zero() {
+
+            //given
+            databaseAccess.saveValue("BASE_CONTRIBUTION_RATE", -1);
+
+            //when
+            pensionContributionCalculator = new PensionContributionCalculator(databaseAccess);
+
+            //then
+            assertThrows(IllegalArgumentException.class,
+                         () -> pensionContributionCalculator.calculatePensionContribution(EMPLOYEE_ID),
+                         "Base contribution percentage must be greater than or equal to zero");
+
+        }
+
     }
 
 

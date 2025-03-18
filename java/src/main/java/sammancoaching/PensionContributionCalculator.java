@@ -14,9 +14,13 @@ public class PensionContributionCalculator {
     }
 
     public BigDecimal calculatePensionContribution(int employeeId) {
+
         Employee employee = databaseAccessLayer.getEmployeeById(employeeId);
+
         return calculatePensionContribution(employee.getAnnualSalary(),
-                baseContributionPercentage, employee.getTenure(), employee.getSeniority());
+                                            baseContributionPercentage,
+                                            employee.getTenure(),
+                                            employee.getSeniority());
     }
 
     static BigDecimal calculatePensionContribution(BigDecimal annualSalary,
@@ -24,6 +28,8 @@ public class PensionContributionCalculator {
                                                    int tenureYears,
                                                    SeniorityLevel seniority) {
         // BUG: Should throw an IllegalArgumentException if either annualSalary or baseContributionPercentage are below zero
+        if (baseContributionPercentage < 0)
+            throw new IllegalArgumentException("Base contribution percentage must be greater than or equal to zero");
 
         double tenureBonus = 0;
         // BUG: Should be a bonus of 3.5 for 10 years or more

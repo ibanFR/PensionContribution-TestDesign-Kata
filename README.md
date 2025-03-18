@@ -14,3 +14,9 @@ Sample solution
 
 The "sample_solution" branch shows one way to solve this exercise. We suggest you try it for yourself before looking at
 it. There is more information in the README file in that branch.
+
+
+Notes
+-----
+I find it odd that an employee does not have an attribute for their employee id
+there are some warnings on the initial kata code
