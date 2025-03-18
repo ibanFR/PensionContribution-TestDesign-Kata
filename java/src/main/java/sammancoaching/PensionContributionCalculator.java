@@ -30,6 +30,8 @@ public class PensionContributionCalculator {
         // BUG: Should throw an IllegalArgumentException if either annualSalary or baseContributionPercentage are below zero
         if (baseContributionPercentage < 0)
             throw new IllegalArgumentException("Base contribution percentage must be greater than or equal to zero");
+        if (annualSalary.compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("Annual salary must be greater than or equal to zero");
 
         double tenureBonus = 0;
         // BUG: Should be a bonus of 3.5 for 10 years or more
